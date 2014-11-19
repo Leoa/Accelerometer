@@ -21,7 +21,7 @@ public class MainActivity extends Activity implements SensorEventListener{
     private Sensor senAccelerometer;
     private long lastUpdate=0;
     private float last_x,last_y,last_z;
-    private static final int SHAKE_THRESHOLD = 600;
+    private static final int SHAKE_THRESHOLD = 300;
     private TextView textBox;
 
     @Override
@@ -60,11 +60,12 @@ public class MainActivity extends Activity implements SensorEventListener{
                 if(speed < SHAKE_THRESHOLD){
                     // do nothing
                     textBox.setText("phone is NOT shaking");
+                }else {
+                    textBox.setText("phone is shaking");
+                    last_x = x;
+                    last_y = y;
+                    last_z = z;
                 }
-                textBox.setText("phone is shaking");
-                last_x = x;
-                last_y = y;
-                last_z = z;
 
             }
         }

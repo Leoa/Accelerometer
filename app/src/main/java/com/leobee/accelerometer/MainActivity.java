@@ -21,11 +21,11 @@ public class MainActivity extends Activity implements SensorEventListener{
     private Sensor senAccelerometer;
     private long lastUpdate=0;
     private float last_x,last_y,last_z;
-    private static final int SHAKE_THRESHOLD = 300;
+    private static final int SHAKE_THRESHOLD = 1;
     private TextView textBox;
     private StringBuilder builder = new StringBuilder();
     private float [] history = new float[3];
-    String [] direction = {"NONE","NONE"};
+    String [] direction = {"NONE","NONE","NONE"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 
             float xChange = history[0] - x;
             float yChange = history[1] - y;
-            float zChange = history[1] - z;
+            float zChange = history[2] - z;
 
             history[0] = x;
             history[1] = y;
@@ -63,41 +63,43 @@ public class MainActivity extends Activity implements SensorEventListener{
             long curTime=System.currentTimeMillis();
 
             // compare the current time to last update to limit data from sensor
-            if((curTime - lastUpdate)>100){
+            if((curTime - lastUpdate)>1){
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
                 //detect if the device has been shaken
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 100;
                 if(speed < SHAKE_THRESHOLD){
                     // do nothing
                     textBox.setText("Phone is NOT Moving");
-                }
-                else if(xChange > 2){
-                    direction[0] = "LEFT";
-                }
-                else if (xChange < -2){
-                    direction[0] = "RIGHT";
-                }
-                else if (yChange > 2){
-                    direction[1] = "DOWN";
-                }
-                else if (yChange < -2){
-                    direction[1] = "UP";
-                }
-
-                else {
-                    textBox.setText("phone is shaking");
-                    last_x = x;
-                    last_y = y;
-                    last_z = z;
+                } else {
+                    if (xChange > 2) {
+                        direction[0] = "LEFT";
+                    } else if (xChange < -2) {
+                        direction[0] = "RIGHT";
+                    } else if (yChange > 2) {
+                        direction[1] = "DOWN";
+                    } else if (yChange < -2) {
+                        direction[1] = "UP";
+                    } else if (zChange > 2) {
+                        direction[2] = "FORWARD";
+                    } else if (zChange < -2) {
+                        direction[2] = "BACKWARD";
+                    } else {
+                        textBox.setText("phone is shaking");
+                        last_x = x;
+                        last_y = y;
+                        last_z = z;
+                    }
                 }
 
                 builder.setLength(0);
                 builder.append("x: ");
                 builder.append(direction[0]);
+                builder.append("\n");
                 builder.append(" y: ");
                 builder.append(direction[1]);
+                builder.append("\n");
                 builder.append(" z: ");
                 builder.append(direction[2]);
 

@@ -23,6 +23,9 @@ public class MainActivity extends Activity implements SensorEventListener{
     private float last_x,last_y,last_z;
     private static final int SHAKE_THRESHOLD = 300;
     private TextView textBox;
+    private StringBuilder builder = new StringBuilder();
+    private float [] history = new float[3];
+    String [] direction = {"NONE","NONE"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +34,10 @@ public class MainActivity extends Activity implements SensorEventListener{
         // text box display if phone is shakeing
         textBox=(TextView)findViewById(R.id.textView);
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        senAccelerometer = (senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
-        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        textBox.setText("Shake Phone");
+       // senAccelerometer = (senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+        senAccelerometer =  senSensorManager .getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+        textBox.setText("Move Phone");
     }
 
     @Override
@@ -47,6 +51,14 @@ public class MainActivity extends Activity implements SensorEventListener{
             float y = event.values[1];
             float z = event.values[2];
 
+            float xChange = history[0] - x;
+            float yChange = history[1] - y;
+            float zChange = history[1] - z;
+
+            history[0] = x;
+            history[1] = y;
+            history[2] = z;
+
             // get the current time of the
             long curTime=System.currentTimeMillis();
 
@@ -59,13 +71,38 @@ public class MainActivity extends Activity implements SensorEventListener{
                 float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
                 if(speed < SHAKE_THRESHOLD){
                     // do nothing
-                    textBox.setText("phone is NOT shaking");
-                }else {
+                    textBox.setText("Phone is NOT Moving");
+                }
+                else if(xChange > 2){
+                    direction[0] = "LEFT";
+                }
+                else if (xChange < -2){
+                    direction[0] = "RIGHT";
+                }
+                else if (yChange > 2){
+                    direction[1] = "DOWN";
+                }
+                else if (yChange < -2){
+                    direction[1] = "UP";
+                }
+
+                else {
                     textBox.setText("phone is shaking");
                     last_x = x;
                     last_y = y;
                     last_z = z;
                 }
+
+                builder.setLength(0);
+                builder.append("x: ");
+                builder.append(direction[0]);
+                builder.append(" y: ");
+                builder.append(direction[1]);
+                builder.append(" z: ");
+                builder.append(direction[2]);
+
+
+                textBox.setText(builder.toString());
 
             }
         }
@@ -74,10 +111,9 @@ public class MainActivity extends Activity implements SensorEventListener{
     @Override
     public void onAccuracyChanged(Sensor sensor,int accuracy){}
 
-@Override
+    @Override
 
-protected  void onPause(){
-
+    protected  void onPause(){
     super.onPause();
     senSensorManager.unregisterListener(this);
 

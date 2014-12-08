@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.leobee.accelerometer.R;
+import com.leobee.accelerometer.database.DatabaseOperations;
+
+import utilities.Timestamp;
 //http://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
 
 
@@ -26,6 +28,7 @@ public class MainActivity extends Activity implements SensorEventListener{
     private StringBuilder builder = new StringBuilder();
     private float [] history = new float[3];
     String [] direction = {"NONE","NONE","NONE"};
+    Context ctx = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +41,14 @@ public class MainActivity extends Activity implements SensorEventListener{
         senAccelerometer =  senSensorManager .getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
         textBox.setText("Move Phone");
+
     }
 
     @Override
     public void onSensorChanged(SensorEvent event){
+
+        DatabaseOperations DB = new DatabaseOperations(ctx);
+
         // where we can detect change
         Sensor mySensor =event.sensor;
 
@@ -60,7 +67,8 @@ public class MainActivity extends Activity implements SensorEventListener{
             history[2] = z;
 
             // get the current time of the
-            long curTime=System.currentTimeMillis();
+            long curTime=System.currentTimeMillis()/1000;
+
 
             // compare the current time to last update to limit data from sensor
             if((curTime - lastUpdate)>1){
@@ -75,16 +83,22 @@ public class MainActivity extends Activity implements SensorEventListener{
                 } else {
                     if (xChange > 2) {
                         direction[0] = "LEFT";
+                        DB.putInfo(DB,"left", Timestamp.getCurrentTimeStamp());
                     } else if (xChange < -2) {
                         direction[0] = "RIGHT";
+                        DB.putInfo(DB,"right", Timestamp.getCurrentTimeStamp());
                     } else if (yChange > 2) {
                         direction[1] = "DOWN";
+                        DB.putInfo(DB,"down", Timestamp.getCurrentTimeStamp());
                     } else if (yChange < -2) {
                         direction[1] = "UP";
+                        DB.putInfo(DB,"up", Timestamp.getCurrentTimeStamp());
                     } else if (zChange > 2) {
                         direction[2] = "FORWARD";
+                        DB.putInfo(DB,"front", Timestamp.getCurrentTimeStamp());
                     } else if (zChange < -2) {
                         direction[2] = "BACKWARD";
+                        DB.putInfo(DB,"back", Timestamp.getCurrentTimeStamp());
                     } else {
                         textBox.setText("phone is shaking");
                         last_x = x;

@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.leobee.accelerometer.database.DatabaseOperations;
+import thedatabase.DatabaseOperations;
 
 import utilities.Timestamp;
 //http://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125

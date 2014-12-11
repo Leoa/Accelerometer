@@ -19,9 +19,11 @@ public class TableData {
         public static final String DIRECTION_DOWN = "down";
         public static final String DIRECTION_FRONT = "front";
         public static final String DIRECTION_BACK = "back";
+        public static final String DIRECTION_SHAKE= "shake";
         public static final String DATABASE_NAME = "Phone_Positions";
         public static final String TABLE_NAME = "Positions";
         public static final String TIMESTAMP = "timestamp";
+        public static final String SUM = "sum";
 
 
     }

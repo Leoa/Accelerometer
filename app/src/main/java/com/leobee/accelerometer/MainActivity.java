@@ -15,7 +15,7 @@ import thedatabase.DatabaseOperations;
 
 import utilities.Timestamp;
 //http://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
-
+//https://www.youtube.com/watch?v=zH7dmLjUrPA&list=PLshdtb5UWjSrEUEKlfHwqQtYu2HxtCwu_&index=2 17:30
 
 public class MainActivity extends Activity implements SensorEventListener{
 
@@ -50,7 +50,10 @@ public class MainActivity extends Activity implements SensorEventListener{
         DatabaseOperations DB = new DatabaseOperations(ctx);
 
         // where we can detect change
-        Sensor mySensor =event.sensor;
+        Sensor mySensor = event.sensor;
+
+        // value added to database for art calculations
+        int positionValue=1;
 
         if(mySensor.getType()==Sensor.TYPE_ACCELEROMETER){
             // get x,y and z of the phone's position
@@ -83,24 +86,25 @@ public class MainActivity extends Activity implements SensorEventListener{
                 } else {
                     if (xChange > 2) {
                         direction[0] = "LEFT";
-                        DB.putInfo(DB,"left", Timestamp.getCurrentTimeStamp());
+                        DB.putInfo(DB,"left", Timestamp.getCurrentTimeStamp(),positionValue);
                     } else if (xChange < -2) {
                         direction[0] = "RIGHT";
-                        DB.putInfo(DB,"right", Timestamp.getCurrentTimeStamp());
+                        DB.putInfo(DB,"right", Timestamp.getCurrentTimeStamp(),positionValue);
                     } else if (yChange > 2) {
                         direction[1] = "DOWN";
-                        DB.putInfo(DB,"down", Timestamp.getCurrentTimeStamp());
+                        DB.putInfo(DB,"down", Timestamp.getCurrentTimeStamp(),positionValue);
                     } else if (yChange < -2) {
                         direction[1] = "UP";
-                        DB.putInfo(DB,"up", Timestamp.getCurrentTimeStamp());
+                        DB.putInfo(DB,"up", Timestamp.getCurrentTimeStamp(),positionValue);
                     } else if (zChange > 2) {
                         direction[2] = "FORWARD";
-                        DB.putInfo(DB,"front", Timestamp.getCurrentTimeStamp());
+                        DB.putInfo(DB,"front", Timestamp.getCurrentTimeStamp(),positionValue);
                     } else if (zChange < -2) {
                         direction[2] = "BACKWARD";
-                        DB.putInfo(DB,"back", Timestamp.getCurrentTimeStamp());
+                        DB.putInfo(DB,"back", Timestamp.getCurrentTimeStamp(),positionValue);
                     } else {
                         textBox.setText("phone is shaking");
+                        DB.putInfo(DB,"shake", Timestamp.getCurrentTimeStamp(),positionValue);
                         last_x = x;
                         last_y = y;
                         last_z = z;

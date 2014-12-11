@@ -76,10 +76,9 @@ public class DatabaseOperations  extends SQLiteOpenHelper{
 
             column = TableData.TableInfo.DIRECTION_SHAKE;
         }
-        
-        cv.put(column,position);
+
+        cv.put(column,sum);
         cv.put(TableData.TableInfo.TIMESTAMP, timestamp);
-        cv.put(TableData.TableInfo.SUM,sum);
         long k = SQ.insert(TableData.TableInfo.TABLE_NAME,null,cv);
         Log.d("Database Operations","one row inserted " + k);
         SQ.close();

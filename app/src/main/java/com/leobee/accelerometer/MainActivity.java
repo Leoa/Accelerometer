@@ -2,6 +2,7 @@ package com.leobee.accelerometer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -123,6 +124,17 @@ public class MainActivity extends Activity implements SensorEventListener{
 
 
                 textBox.setText(builder.toString());
+                DatabaseOperations DOP = new DatabaseOperations(ctx);
+                Cursor CR =DOP.getInfo(DOP);
+                CR.moveToFirst();
+                boolean movementStatus = false;
+                do{
+
+                    String right = "";
+
+                    CR.getInt(0)
+
+                }while(CR.moveToNext());
 
             }
         }

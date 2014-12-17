@@ -8,12 +8,17 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-import thedatabase.DatabaseOperations;
+import java.util.List;
 
+import thedatabase.DatabaseOperations;
+import thedatabase.Position;
 import utilities.Timestamp;
 //http://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
 //https://www.youtube.com/watch?v=zH7dmLjUrPA&list=PLshdtb5UWjSrEUEKlfHwqQtYu2HxtCwu_&index=2 17:30
@@ -30,12 +35,15 @@ public class MainActivity extends Activity implements SensorEventListener{
     private float [] history = new float[3];
     String [] direction = {"NONE","NONE","NONE"};
     Context ctx = this;
+    DatabaseOperations DB = new DatabaseOperations(ctx);
+    Button btn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // text box display if phone is shakeing
+        // text box display if phone is shaking
         textBox=(TextView)findViewById(R.id.textView);
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
        // senAccelerometer = (senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
@@ -43,18 +51,39 @@ public class MainActivity extends Activity implements SensorEventListener{
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
         textBox.setText("Move Phone");
 
+        btn = (Button)findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                //  Log.d("Reading: ", "Reading all Positions..");
+                List<Position> positions = DB.getAllPositions();
+
+                for (Position pos : positions) {
+                    String log = "Position: " + pos.getPosition() + " ,timestamp: " + pos.getTimestamp();
+                    // Writing Contacts to log
+                    Log.d("Name: ", log);
+                }
+
+            }
+        });
+
+
+
+
+
+
     }
 
     @Override
     public void onSensorChanged(SensorEvent event){
 
-        DatabaseOperations DB = new DatabaseOperations(ctx);
+
 
         // where we can detect change
         Sensor mySensor = event.sensor;
 
         // value added to database for art calculations
-        int positionValue=1;
+
 
         if(mySensor.getType()==Sensor.TYPE_ACCELEROMETER){
             // get x,y and z of the phone's position
@@ -71,7 +100,7 @@ public class MainActivity extends Activity implements SensorEventListener{
             history[2] = z;
 
             // get the current time of the
-            long curTime=System.currentTimeMillis()/1000;
+            long curTime=System.currentTimeMillis();
 
 
             // compare the current time to last update to limit data from sensor
@@ -83,29 +112,29 @@ public class MainActivity extends Activity implements SensorEventListener{
                 float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 100;
                 if(speed < SHAKE_THRESHOLD){
                     // do nothing
-                    textBox.setText("Phone is NOT Moving");
+                    textBox.setText("Phone is NOT moving");
                 } else {
                     if (xChange > 2) {
                         direction[0] = "LEFT";
-                        DB.putInfo(DB,"left", Timestamp.getCurrentTimeStamp(),positionValue);
+                        DB.putInfo(DB,"left", Timestamp.getCurrentTimeStamp());
                     } else if (xChange < -2) {
                         direction[0] = "RIGHT";
-                        DB.putInfo(DB,"right", Timestamp.getCurrentTimeStamp(),positionValue);
+                        DB.putInfo(DB,"right", Timestamp.getCurrentTimeStamp());
                     } else if (yChange > 2) {
                         direction[1] = "DOWN";
-                        DB.putInfo(DB,"down", Timestamp.getCurrentTimeStamp(),positionValue);
+                        DB.putInfo(DB,"down", Timestamp.getCurrentTimeStamp());
                     } else if (yChange < -2) {
                         direction[1] = "UP";
-                        DB.putInfo(DB,"up", Timestamp.getCurrentTimeStamp(),positionValue);
+                        DB.putInfo(DB,"up", Timestamp.getCurrentTimeStamp());
                     } else if (zChange > 2) {
                         direction[2] = "FORWARD";
-                        DB.putInfo(DB,"front", Timestamp.getCurrentTimeStamp(),positionValue);
+                        DB.putInfo(DB,"front", Timestamp.getCurrentTimeStamp());
                     } else if (zChange < -2) {
                         direction[2] = "BACKWARD";
-                        DB.putInfo(DB,"back", Timestamp.getCurrentTimeStamp(),positionValue);
+                        DB.putInfo(DB,"back", Timestamp.getCurrentTimeStamp());
                     } else {
-                        textBox.setText("phone is shaking");
-                        DB.putInfo(DB,"shake", Timestamp.getCurrentTimeStamp(),positionValue);
+                       // textBox.setText("phone is shaking");
+                        //DB.putInfo(DB,"shake", Timestamp.getCurrentTimeStamp());
                         last_x = x;
                         last_y = y;
                         last_z = z;
@@ -124,18 +153,18 @@ public class MainActivity extends Activity implements SensorEventListener{
 
 
                 textBox.setText(builder.toString());
-                DatabaseOperations DOP = new DatabaseOperations(ctx);
-                Cursor CR =DOP.getInfo(DOP);
+              //  DatabaseOperations DOP = new DatabaseOperations(ctx);
+               /* Cursor CR =DOP.getInfo(DOP);
                 CR.moveToFirst();
                 boolean movementStatus = false;
                 do{
 
                     String right = "";
 
-                    CR.getInt(0)
+                    CR.getInt(0);
 
                 }while(CR.moveToNext());
-
+*/
             }
         }
     }
@@ -147,12 +176,23 @@ public class MainActivity extends Activity implements SensorEventListener{
 
     protected  void onPause(){
     super.onPause();
-    senSensorManager.unregisterListener(this);
+
+        ///query db
+
+
+             senSensorManager.unregisterListener(this);
 
 }
     protected void onResume(){
         super.onResume();
         senSensorManager.registerListener(this,senAccelerometer,senSensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    protected void onStop(){
+
+
+        super.onStop();
+
     }
 
     @Override

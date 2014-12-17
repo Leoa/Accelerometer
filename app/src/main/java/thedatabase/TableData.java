@@ -17,7 +17,7 @@ public class TableData {
         public static final String DATABASE_NAME = "Phone_Positions";
         public static final String TABLE_NAME = "Positions";
         public static final String TIMESTAMP = "timestamp";
-;
+
 
 
     }

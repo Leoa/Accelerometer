@@ -95,7 +95,9 @@ public class DatabaseOperations  extends SQLiteOpenHelper{
 
 
     public int getSumLeft() {
-        final String selectQuery ="SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME +" WHERE "+TableData.TableInfo.DIRECTION+" = left";
+
+
+        String selectQuery =  "SELECT COUNT( "+TableData.TableInfo.DIRECTION+" ) WHERE "+TableData.TableInfo.DIRECTION+" = left";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         cursor.moveToFirst();

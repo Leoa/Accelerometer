@@ -63,7 +63,6 @@ public class MainActivity extends Activity implements SensorEventListener{
                     // Writing Contacts to log
                     Log.d("Name: ", log);
                 }
-
             }
         });
 

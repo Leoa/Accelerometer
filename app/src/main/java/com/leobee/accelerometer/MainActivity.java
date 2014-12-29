@@ -57,12 +57,16 @@ public class MainActivity extends Activity implements SensorEventListener{
                 // Perform action on click
                 //  Log.d("Reading: ", "Reading all Positions..");
                 List<Position> positions = DB.getAllPositions();
-
+                int x;
                 for (Position pos : positions) {
                     String log = "Position: " + pos.getPosition() + " ,timestamp: " + pos.getTimestamp();
                     // Writing Contacts to log
                     Log.d("Name: ", log);
+
                 }
+                Position posLeft = new Position();
+                x = posLeft.getSumLeft();
+                System.out.println("Sum of lefts are "+ x);
             }
         });
 
@@ -108,7 +112,7 @@ public class MainActivity extends Activity implements SensorEventListener{
                 lastUpdate = curTime;
 
                 //detect if the device has been shaken
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 100;
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 3000;
                 if(speed < SHAKE_THRESHOLD){
                     // do nothing
                     textBox.setText("Phone is NOT moving");

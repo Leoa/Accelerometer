@@ -55,7 +55,7 @@ public class Position {
             this._name = name;
         }
 
-        // getting phone number
+         // getting phone number
         public String getTimestamp(){
             return this._timestamp;
         }

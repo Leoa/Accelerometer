@@ -64,9 +64,9 @@ public class MainActivity extends Activity implements SensorEventListener{
                     Log.d("Name: ", log);
 
                 }
-                Position posLeft = new Position();
-                x = posLeft.getSumLeft();
-                System.out.println("Sum of lefts are "+ x);
+                int posLeft = DB.getSumLeft();
+
+                System.out.println("Sum of lefts are "+ posLeft);
             }
         });
 

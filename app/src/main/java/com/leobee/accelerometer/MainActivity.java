@@ -57,22 +57,39 @@ public class MainActivity extends Activity implements SensorEventListener{
                 // Perform action on click
                 //  Log.d("Reading: ", "Reading all Positions..");
                 List<Position> positions = DB.getAllPositions();
-                int x;
                 for (Position pos : positions) {
                     String log = "Position: " + pos.getPosition() + " ,timestamp: " + pos.getTimestamp();
                     // Writing Contacts to log
                     Log.d("Name: ", log);
 
                 }
+
                 int posLeft = DB.getSumLeft();
+                int posRight = DB.getSumRight();
+                int posUp = DB.getSumUp();
+                int posDown = DB.getSumDown();
+                int posFront = DB.getSumFront();
+                int posBack = DB.getSumBack();
 
                 System.out.println("Sum of lefts are "+ posLeft);
+                System.out.println("Sum of rights are "+ posRight);
+                System.out.println("Sum of ups are "+ posUp);
+                System.out.println("Sum of downs are "+ posDown);
+                System.out.println("Sum of fronts are "+ posFront);
+                System.out.println("Sum of backs are "+ posBack);
+
+                //getAllLeftTimeStamps()
+                List<Position> timeStampLefts = DB.getAllLeftTimeStamps();
+                for (Position timeLefts : timeStampLefts) {
+                    String log = " Getting all left Positions:  ,timestamp: " + timeLefts.getTimestamp();
+                    // Writing Contacts to log
+                    Log.d("Name: ", log);
+
+                }
+
+
             }
         });
-
-
-
-
 
 
     }

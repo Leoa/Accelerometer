@@ -93,12 +93,162 @@ public class DatabaseOperations  extends SQLiteOpenHelper{
     }
 
 
+    /*TO DO use a list to get timestamps per position*/
+    public String getTimestamp(){
+        return null;
+    }
 
+    // Getting All Left timestamps
+    public List<Position> getAllLeftTimeStamps() {
+        List<Position> positionList = new ArrayList<Position>();
+        // Select All Query
+        String selectQuery =  "SELECT "+TableData.TableInfo.TIMESTAMP+" FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'left'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Position pos = new Position();
+                // pos.setID(cursor.getString(0));
+               // pos.setPosition(cursor.getString(0));
+                pos.setTimestamp(cursor.getString(0));
+                // Adding position to list
+                positionList.add(pos);
+            } while (cursor.moveToNext());
+        }
+
+        // return positions list
+        return positionList;
+    }
+    // Getting All Right timestamps
+    public List<Position> getAllRightTimeStamps() {
+        List<Position> positionList = new ArrayList<Position>();
+        // Select All Query
+        String selectQuery =  "SELECT "+TableData.TableInfo.TIMESTAMP+" FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'right'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Position pos = new Position();
+                // pos.setID(cursor.getString(0));
+                // pos.setPosition(cursor.getString(0));
+                pos.setTimestamp(cursor.getString(0));
+                // Adding position to list
+                positionList.add(pos);
+            } while (cursor.moveToNext());
+        }
+
+        // return positions list
+        return positionList;
+    }
+
+    // Getting All Up timestamps
+    public List<Position> getAllUpTimeStamps() {
+        List<Position> positionList = new ArrayList<Position>();
+        // Select All Query
+        String selectQuery =  "SELECT "+TableData.TableInfo.TIMESTAMP+" FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'up'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Position pos = new Position();
+                // pos.setID(cursor.getString(0));
+                // pos.setPosition(cursor.getString(0));
+                pos.setTimestamp(cursor.getString(0));
+                // Adding position to list
+                positionList.add(pos);
+            } while (cursor.moveToNext());
+        }
+
+        // return positions list
+        return positionList;
+    }
+
+    // Getting All Down timestamps
+    public List<Position> getAllDownTimeStamps() {
+        List<Position> positionList = new ArrayList<Position>();
+        // Select All Query
+        String selectQuery =  "SELECT "+TableData.TableInfo.TIMESTAMP+" FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'down'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Position pos = new Position();
+                // pos.setID(cursor.getString(0));
+                // pos.setPosition(cursor.getString(0));
+                pos.setTimestamp(cursor.getString(0));
+                // Adding position to list
+                positionList.add(pos);
+            } while (cursor.moveToNext());
+        }
+
+        // return positions list
+        return positionList;
+    }
+    // Getting All front timestamps
+    public List<Position> getAllFrontTimeStamps() {
+        List<Position> positionList = new ArrayList<Position>();
+        // Select All Query
+        String selectQuery =  "SELECT "+TableData.TableInfo.TIMESTAMP+" FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'front'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Position pos = new Position();
+                // pos.setID(cursor.getString(0));
+                // pos.setPosition(cursor.getString(0));
+                pos.setTimestamp(cursor.getString(0));
+                // Adding position to list
+                positionList.add(pos);
+            } while (cursor.moveToNext());
+        }
+
+        // return positions list
+        return positionList;
+    }
+
+    // Getting All back timestamps
+    public List<Position> getAllBackTimeStamps() {
+        List<Position> positionList = new ArrayList<Position>();
+        // Select All Query
+        String selectQuery =  "SELECT "+TableData.TableInfo.TIMESTAMP+" FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'back'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Position pos = new Position();
+                // pos.setID(cursor.getString(0));
+                // pos.setPosition(cursor.getString(0));
+                pos.setTimestamp(cursor.getString(0));
+                // Adding position to list
+                positionList.add(pos);
+            } while (cursor.moveToNext());
+        }
+
+        // return positions list
+        return positionList;
+    }
+
+    // get sum positions left
     public int getSumLeft() {
-
-
-      //  String selectQuery =  "SELECT COUNT( "+TableData.TableInfo.DIRECTION+" ) WHERE "+TableData.TableInfo.DIRECTION+" = 'left'";
-        String selectQuery =  "SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'left'";
+    String selectQuery =  "SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'left'";
         int sum=0;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -108,5 +258,74 @@ public class DatabaseOperations  extends SQLiteOpenHelper{
         cursor.close();
         return sum;
     }
+
+
+    // get sum positions right
+    public int getSumRight(){
+        String selectQuery =  "SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'right'";
+        int sum=0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            sum = cursor.getInt(0);
+        }
+        cursor.close();
+        return sum;
+    }
+
+
+    // get sum positions up
+    public int getSumUp(){
+        String selectQuery =  "SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'up'";
+        int sum=0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            sum = cursor.getInt(0);
+        }
+        cursor.close();
+        return sum;
+    }
+
+    // get sum positions down
+    public int getSumDown(){
+        String selectQuery =  "SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'down'";
+        int sum=0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            sum = cursor.getInt(0);
+        }
+        cursor.close();
+        return sum;
+    }
+
+
+    // get sum positions front
+    public int getSumFront(){
+        String selectQuery =  "SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'front'";
+        int sum=0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            sum = cursor.getInt(0);
+        }
+        cursor.close();
+        return sum;
+    }
+
+    // get sum positions back
+    public int getSumBack(){
+        String selectQuery =  "SELECT COUNT(*) FROM "+TableData.TableInfo.TABLE_NAME+" WHERE "+TableData.TableInfo.DIRECTION+"  = 'back'";
+        int sum=0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            sum = cursor.getInt(0);
+        }
+        cursor.close();
+        return sum;
+    }
+
 
 }

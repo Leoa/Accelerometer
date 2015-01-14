@@ -19,6 +19,7 @@ import java.util.List;
 
 import thedatabase.DatabaseOperations;
 import thedatabase.Position;
+import utilities.TimeOutTimer;
 import utilities.Timestamp;
 //http://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
 //https://www.youtube.com/watch?v=zH7dmLjUrPA&list=PLshdtb5UWjSrEUEKlfHwqQtYu2HxtCwu_&index=2 17:30
@@ -36,8 +37,8 @@ public class MainActivity extends Activity implements SensorEventListener{
     String [] direction = {"NONE","NONE","NONE"};
     Context ctx = this;
     DatabaseOperations DB = new DatabaseOperations(ctx);
-    Button btn;
-
+    Button btn,btn2;
+    TimeOutTimer timer = new TimeOutTimer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class MainActivity extends Activity implements SensorEventListener{
         senAccelerometer =  senSensorManager .getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
         textBox.setText("Move Phone");
+
+        timer.startTimer();
 
         btn = (Button)findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +94,15 @@ public class MainActivity extends Activity implements SensorEventListener{
             }
         });
 
+        btn2 =(Button)findViewById(R.id.btn2);
+        btn2.setOnClickListener(new View.OnClickListener(){
+            // the onClick method must be included when you declare a new OnClickListener object
+            public void onClick(View v) {
+                //Your code for when your button was clicked would go here
 
+               timer.stopTimerTask(ctx);
+            }
+        });
     }
 
     @Override

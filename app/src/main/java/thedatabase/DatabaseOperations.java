@@ -93,11 +93,6 @@ public class DatabaseOperations  extends SQLiteOpenHelper{
     }
 
 
-    /*TO DO use a list to get timestamps per position*/
-    public String getTimestamp(){
-        return null;
-    }
-
     // Getting All Left timestamps
     public List<Position> getAllLeftTimeStamps() {
         List<Position> positionList = new ArrayList<Position>();

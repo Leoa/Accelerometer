@@ -21,6 +21,8 @@ import thedatabase.DatabaseOperations;
 import thedatabase.Position;
 import utilities.TimeOutTimer;
 import utilities.Timestamp;
+import utilities.PreferenceConnector;
+import android.content.SharedPreferences;
 //http://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
 //https://www.youtube.com/watch?v=zH7dmLjUrPA&list=PLshdtb5UWjSrEUEKlfHwqQtYu2HxtCwu_&index=2 17:30
 
@@ -39,6 +41,8 @@ public class MainActivity extends Activity implements SensorEventListener{
     DatabaseOperations DB = new DatabaseOperations(ctx);
     Button btn,btn2;
     TimeOutTimer timer = new TimeOutTimer();
+    public static String APP_PREFERENCES = "appPreferences";
+    public static String PREFERENCE_SAMPLE = "prefSample";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,19 @@ public class MainActivity extends Activity implements SensorEventListener{
                 //Your code for when your button was clicked would go here
 
                timer.stopTimerTask(ctx);
+
+
+
+                int removeSplash = PreferenceConnector.readInteger(MainActivity.this,
+                        PreferenceConnector.DATACOLLECTION_ON_OFF, 0);
+
+                if (removeSplash != 1) {
+                     removeSplash = 1;
+                    PreferenceConnector.writeInteger(MainActivity.this,
+                            PreferenceConnector.DATACOLLECTION_ON_OFF, removeSplash);
+                }
+
+
             }
         });
     }

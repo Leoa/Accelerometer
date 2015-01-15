@@ -322,5 +322,15 @@ public class DatabaseOperations  extends SQLiteOpenHelper{
         return sum;
     }
 
+    public void deleteRows(){
+
+        String selectQuery="DELETE FROM "+ TableData.TableInfo.TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+    }
+
+
+
+
 
 }

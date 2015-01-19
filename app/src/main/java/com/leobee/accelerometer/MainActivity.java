@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements SensorEventListener{
     Context ctx = this;
     DatabaseOperations DB = new DatabaseOperations(ctx);
     Button btn,btn2;
+    
     TimeOutTimer timer = new TimeOutTimer();
     public static String APP_PREFERENCES = "appPreferences";
     public static String PREFERENCE_SAMPLE = "prefSample";
